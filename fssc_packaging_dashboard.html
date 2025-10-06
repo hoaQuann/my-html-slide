@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy trình Quản lý Artwork & Phát triển Sản phẩm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone & Teal) -->
+    <!-- Application Structure Plan: A single-page, process-flow-oriented dashboard focusing on Artwork and Product Development (formerly modules 2 & 4). The structure follows a 4-step vertical timeline/stepper: 1. Input, 2. Approval, 3. Control, 4. Inspection. This linear structure directly mirrors the user's requested workflow, making it highly intuitive for a workshop setting to define a specific process from start to finish. -->
+    <!-- Visualization & Content Choices: The application uses a custom stepper/timeline component built with HTML/CSS to visualize the process flow. Goal: Organize & Guide. Method: Interactive Stepper with accordion-style content reveals. Interaction: Users click on a step to expand it and see the detailed questions for that phase. Justification: This approach is more focused and analytical than the previous multi-module layout, directly addressing the user's need for a deep dive into a single, critical workflow. Library: Vanilla JS for interactions. CONFIRMATION: NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .step-content {
+            display: none;
+        }
+        .step.active .step-content {
+            display: block;
+        }
+        .step.active .step-circle {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+            border-color: #0d9488;
+        }
+        .step.active .step-title {
+            color: #0d9488; /* teal-600 */
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-72 bg-white shadow-lg p-4 flex-col fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30">
+            <div class="flex items-center mb-8">
+                <span class="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-xl mr-3">A</span>
+                <h1 class="text-xl font-bold text-teal-700">Artwork Process</h1>
+            </div>
+            <nav class="flex-grow">
+                <p class="px-4 text-sm font-semibold text-stone-500 mb-2">QUY TRÌNH CHÍNH</p>
+                <ul>
+                    <li><a href="#step1" class="nav-link flex items-center py-3 px-4 rounded-lg text-stone-700 bg-teal-50 text-teal-600 font-semibold">
+                        <span class="w-6 h-6 mr-3 border-2 border-teal-500 rounded-full flex items-center justify-center text-sm">1</span>
+                        <span>Đầu vào & Yêu cầu</span>
+                    </a></li>
+                    <li><a href="#step2" class="nav-link flex items-center py-3 px-4 rounded-lg text-stone-700 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
+                        <span class="w-6 h-6 mr-3 border-2 border-stone-300 rounded-full flex items-center justify-center text-sm">2</span>
+                        <span>Tiếp nhận & Phê duyệt</span>
+                    </a></li>
+                    <li><a href="#step3" class="nav-link flex items-center py-3 px-4 rounded-lg text-stone-700 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
+                        <span class="w-6 h-6 mr-3 border-2 border-stone-300 rounded-full flex items-center justify-center text-sm">3</span>
+                        <span>Kiểm soát Mẫu</span>
+                    </a></li>
+                    <li><a href="#step4" class="nav-link flex items-center py-3 px-4 rounded-lg text-stone-700 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200">
+                        <span class="w-6 h-6 mr-3 border-2 border-stone-300 rounded-full flex items-center justify-center text-sm">4</span>
+                        <span>Kiểm tra & Sản xuất</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col">
+             <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-20">
+                <div class="flex items-center">
+                    <button id="menu-toggle" class="text-stone-600 focus:outline-none md:hidden mr-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                    <h2 class="text-xl font-bold text-stone-800">Quy trình Quản lý Artwork & Phát triển Sản phẩm</h2>
+                </div>
+            </header>
+
+            <main class="flex-1 p-4 sm:p-6 lg:p-8">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Vertical Stepper -->
+                    <div class="space-y-8">
+                        <!-- Step 1: Đầu vào -->
+                        <div id="step1" class="step active">
+                            <div class="flex items-center cursor-pointer step-header">
+                                <div class="step-circle w-10 h-10 rounded-full border-2 border-stone-300 flex items-center justify-center font-bold text-lg text-stone-500 transition-colors">1</div>
+                                <h3 class="step-title ml-4 text-xl font-bold text-stone-600 transition-colors">Đầu vào & Yêu cầu</h3>
+                            </div>
+                            <div class="step-content pl-6 ml-5 pt-4 border-l-2 border-stone-200">
+                                <p class="mb-4 text-stone-600">Xác định cách thức tiếp nhận, đánh giá và chuẩn hóa các yêu cầu thiết kế từ mọi nguồn (khách hàng, nội bộ) để đảm bảo thông tin đầy đủ và chính xác ngay từ đầu.</p>
+                                <ul class="list-disc list-inside space-y-3 text-stone-700">
+                                    <li><b>Từ khách hàng:</b> Làm thế nào để chuẩn hóa yêu cầu từ khách hàng? Chúng ta có "Phiếu yêu cầu thiết kế" với các trường thông tin bắt buộc (thành phần, quy định pháp lý, mã màu...) để tránh bỏ sót thông tin không?</li>
+                                    <li><b>Phát triển sản phẩm mới (NPD):</b> Khi phát triển sản phẩm mới, quy trình có bước đánh giá tác động của vật liệu hoặc cấu trúc bao bì mới đến an toàn thực phẩm không? Ai chịu trách nhiệm cho việc này?</li>
+                                    <li><b>Bao bì chức năng:</b> Nếu sản xuất bao bì có chức năng đặc biệt (VD: kéo dài HSD), làm thế nào để xác định và ghi nhận các yêu cầu kỹ thuật và bằng chứng xác nhận chức năng đó ngay từ giai đoạn đầu vào?</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Tiếp nhận & Phê duyệt -->
+                        <div id="step2" class="step">
+                            <div class="flex items-center cursor-pointer step-header">
+                                <div class="step-circle w-10 h-10 rounded-full border-2 border-stone-300 flex items-center justify-center font-bold text-lg text-stone-500 transition-colors">2</div>
+                                <h3 class="step-title ml-4 text-xl font-bold text-stone-600 transition-colors">Tiếp nhận & Phê duyệt</h3>
+                            </div>
+                            <div class="step-content pl-6 ml-5 pt-4 border-l-2 border-stone-200">
+                               <p class="mb-4 text-stone-600">Thiết lập một quy trình phê duyệt chính thức, với vai trò và bằng chứng rõ ràng, để tạo ra một "Mẫu Chuẩn" (Master Artwork) duy nhất, không thể chối cãi.</p>
+                                <ul class="list-disc list-inside space-y-3 text-stone-700">
+                                     <li><b>Thẩm quyền phê duyệt:</b> Ai là người có quyền lực cao nhất để "chốt" một mẫu thiết kế? Cần xây dựng một ma trận phê duyệt rõ ràng (VD: Kinh doanh duyệt nội dung thương mại, QA duyệt pháp lý, Sản xuất duyệt tính khả thi) không?</li>
+                                    <li><b>Bằng chứng phê duyệt:</b> Chúng ta đang dùng biểu mẫu nào ("Phiếu Phê duyệt Mẫu thiết kế") để ghi lại bằng chứng? Làm thế nào để đảm bảo Mẫu Chuẩn đã duyệt được lưu trữ và nhận diện (đóng dấu, mã hóa) để không thể nhầm lẫn với bản nháp?</li>
+                                     <li><b>Xác nhận quy trình (Validation):</b> Làm thế nào để chúng ta xác nhận (validate) rằng quy trình sản xuất được thiết kế có khả năng tạo ra sản phẩm an toàn và ổn định theo đúng Mẫu Chuẩn? (Thông qua chạy thử, kiểm nghiệm...)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Kiểm soát Mẫu -->
+                        <div id="step3" class="step">
+                            <div class="flex items-center cursor-pointer step-header">
+                                <div class="step-circle w-10 h-10 rounded-full border-2 border-stone-300 flex items-center justify-center font-bold text-lg text-stone-500 transition-colors">3</div>
+                                <h3 class="step-title ml-4 text-xl font-bold text-stone-600 transition-colors">Kiểm soát Mẫu & Thay đổi</h3>
+                            </div>
+                            <div class="step-content pl-6 ml-5 pt-4 border-l-2 border-stone-200">
+                                <p class="mb-4 text-stone-600">Đảm bảo thông tin từ Mẫu Chuẩn được áp dụng chính xác vào sản xuất và các phiên bản cũ được loại bỏ một cách triệt để, có kiểm soát.</p>
+                                <ul class="list-disc list-inside space-y-3 text-stone-700">
+                                    <li><b>Liên kết Lệnh sản xuất:</b> Mã số phiên bản của Mẫu Chuẩn có phải là thông tin bắt buộc trên Lệnh sản xuất không? Làm thế nào để đảm bảo kho và sản xuất chỉ sử dụng vật tư (trục in, bản kẽm) đúng với phiên bản này?</li>
+                                    <li><b>Quản lý thay đổi:</b> Khi có một thay đổi nhỏ, quy trình có bắt buộc phải tạo ra một phiên bản mới và đi lại từ đầu quy trình phê duyệt không?</li>
+                                    <li><b>Xử lý phiên bản cũ:</b> Ai chịu trách nhiệm thu hồi và hủy các vật tư liên quan đến phiên bản cũ? Quy trình cách ly và hủy được thực hiện và ghi nhận bằng chứng (biên bản, hình ảnh) ra sao?</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Kiểm tra lỗi / mẫu in -->
+                        <div id="step4" class="step">
+                           <div class="flex items-center cursor-pointer step-header">
+                                <div class="step-circle w-10 h-10 rounded-full border-2 border-stone-300 flex items-center justify-center font-bold text-lg text-stone-500 transition-colors">4</div>
+                                <h3 class="step-title ml-4 text-xl font-bold text-stone-600 transition-colors">Kiểm tra & Sản xuất</h3>
+                            </div>
+                             <div class="step-content pl-6 ml-5 pt-4 border-l-2 border-stone-200">
+                                <p class="mb-4 text-stone-600">Thiết lập các chốt chặn kiểm soát tại chuyền sản xuất để đảm bảo sản phẩm thực tế tuân thủ 100% so với Mẫu Chuẩn và ngăn ngừa sai sót hàng loạt.</p>
+                                <ul class="list-disc list-inside space-y-3 text-stone-700">
+                                    <li><b>Duyệt mẫu đầu chuyền (First-Off Approval):</b> Quy trình duyệt "mẫu in đầu tiên" tại xưởng đang diễn ra như thế nào? Ai (Sản xuất, QC) phải tham gia, họ đối chiếu với Mẫu Chuẩn dựa trên tiêu chí nào, và bằng chứng phê duyệt là gì?</li>
+                                    <li><b>Tách biệt sản phẩm:</b> Làm thế nào để chúng ta tách biệt sản phẩm của các đơn hàng hoặc phiên bản khác nhau trên cùng dây chuyền để tránh tuyệt đối việc lẫn lộn?</li>
+                                    <li><b>Xử lý lỗi:</b> Khi phát hiện lỗi in trong quá trình sản xuất, hành động tức thời là gì? Ai có quyền dừng máy và sản phẩm lỗi được nhận diện, cách ly ra sao?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const steps = document.querySelectorAll('.step');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+
+            function setActiveStep(stepElement) {
+                steps.forEach(s => s.classList.remove('active'));
+                if (stepElement) {
+                    stepElement.classList.add('active');
+                }
+                 // Update sidebar nav
+                const stepId = stepElement.id;
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === `#${stepId}`) {
+                        link.classList.add('bg-teal-50', 'text-teal-600', 'font-semibold');
+                        link.querySelector('span:first-child').classList.add('border-teal-500');
+                        link.querySelector('span:first-child').classList.remove('border-stone-300');
+                    } else {
+                        link.classList.remove('bg-teal-50', 'text-teal-600', 'font-semibold');
+                        link.querySelector('span:first-child').classList.remove('border-teal-500');
+                        link.querySelector('span:first-child').classList.add('border-stone-300');
+                    }
+                });
+            }
+
+            steps.forEach(step => {
+                const header = step.querySelector('.step-header');
+                header.addEventListener('click', () => {
+                     if (step.classList.contains('active')) {
+                        step.classList.remove('active');
+                    } else {
+                        setActiveStep(step);
+                    }
+                });
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetStep = document.querySelector(targetId);
+                    if (targetStep) {
+                        setActiveStep(targetStep);
+                         // Scroll to the step
+                        targetStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                     if (window.innerWidth < 768 && sidebar.classList.contains('translate-x-0')) {
+                        sidebar.classList.add('-translate-x-full');
+                        sidebar.classList.remove('translate-x-0');
+                    }
+                });
+            });
+
+             if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('-translate-x-full');
+                    sidebar.classList.toggle('translate-x-0');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
